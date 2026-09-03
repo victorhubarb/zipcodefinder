@@ -1,53 +1,57 @@
-# Zip code finder <a name="readme-top"></a>
-![Static Badge](https://img.shields.io/badge/status-completed-green?style=for-the-badge)
+# Zip Code Finder 📮
 
-## Introduction
-**Zip code finder** is a Java-based application designed to interact with the ViaCEP API. This project allows users to input a Brazilian postal code (CEP), retrieve the corresponding address details, and save the results to a `.JSON` file. The project demonstrates skills in API consumption, JSON handling, and user interaction through a menu-driven interface.
+![Status](https://img.shields.io/badge/status-completed-green?style=for-the-badge)
+![Java](https://img.shields.io/badge/Java-API%20%2B%20JSON-orange?style=for-the-badge&logo=java)
 
-## Table of Contents
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
-- [Technologies](#technologies)
-- [Contributors](#contributors)
+A Java application that queries the ViaCEP API to look up Brazilian postal codes (CEPs) and saves the results as formatted JSON files.
 
-## Installation
+---
 
-### Prerequisites
-- Java JDK 18+ installed
-- An IDE such as IntelliJ IDEA, Eclipse, or NetBeans installed
+## Overview
 
-### Steps to run
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/victorhubarb/zipcodefinder.git
-   cd zipcodefinder
-   ```
-2. Open the project in your preferred IDE:
-- Import the project into your IDE (e.g., using “Open Project” in IntelliJ or “Import Project” in Eclipse).
-- Ensure the project uses the correct Java SDK (JDK 18+).
+Built to practice HTTP API consumption and JSON handling in Java. The user types in a CEP, the app hits the ViaCEP REST API using `java.net.http.HttpClient`, deserializes the response into an `Endereco` record using GSON, prints the address to the console, and writes it to a `.json` file named after the CEP. Clean and focused — does one thing well.
 
-3. Run the application:
-- Locate the Main class in the project structure.
-- Right-click on the Main class and select Run.
+---
 
-## Usage
-The application prompts the user to input a postal code (CEP), fetches the address details from the ViaCEP API, and displays the results. Users can continue making queries or exit the application. The retrieved data is also stored in a .JSON file for further reference.
+## Architecture
 
-## Features
-- **CEP Lookup**: Query the ViaCEP API to retrieve address details for a given postal code.
-- **JSON File Generation**: Save the retrieved address information to a .JSON file.
-- **Menu Navigation**:
-  - Input a postal code.
-  - Display the retrieved address.
-  - Save the data to a .JSON file.
-  - Exit the application.
+```
+src/
+├── Main.java                # Entry point — user input and orchestration
+├── ConsultaCep.java         # HTTP client — builds and sends the ViaCEP API request
+├── Endereco.java            # Java record — models the address response from the API
+└── GeradorDeArquivo.java    # File writer — saves the address as a formatted JSON file
+```
 
-## Technologies
-- **Java**
-- **JSON Handling Libraries** (e.g., Jackson or Gson)
-- **HTTP Client Libraries** (e.g., HttpURLConnection, OkHttp, or similar)
+### Key Concepts Applied
 
-## Contributors
-- [Victor Barbosa](https://github.com/victorhubarb)
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+| Concept | How it shows up |
+|---|---|
+| **HTTP API Consumption** | `HttpClient` + `HttpRequest` from `java.net.http` — no external library needed for the request |
+| **JSON Deserialization** | GSON maps the ViaCEP JSON response directly into the `Endereco` record |
+| **Java Record** | `Endereco` is a record — immutable, concise DTO with `cep`, `logradouro`, `complemento`, `localidade`, `uf`, and `bairro` fields |
+| **File I/O** | `GeradorDeArquivo` writes pretty-printed JSON using `GsonBuilder.setPrettyPrinting()` and `FileWriter` |
+| **Exception Handling** | API errors and file write failures are caught and reported gracefully — app exits cleanly |
+| **var keyword** | `var cep = leitura.nextLine()` — local type inference introduced in Java 10 |
+
+---
+
+## How to Run
+
+**Prerequisites:** Java 18+ · IntelliJ IDEA or Eclipse · GSON library on the classpath
+
+```bash
+git clone https://github.com/victorhubarb/zipcodefinder.git
+cd zipcodefinder
+```
+
+Open in your IDE, add GSON to the classpath, run `Main.java`, and enter any valid Brazilian CEP when prompted.
+
+The app prints the full address to the console and saves it as `<CEP>.json` in the working directory — for example, searching `80530-230` generates `80530-230.json` with the formatted address data.
+
+---
+
+## Author
+
+**Victor Hugo Barbosa**
+[GitHub](https://github.com/victorhubarb) · [LinkedIn](https://www.linkedin.com/in/victorhbarbosa/)
