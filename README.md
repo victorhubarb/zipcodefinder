@@ -9,7 +9,7 @@ A Java application that queries the ViaCEP API to look up Brazilian postal codes
 
 ## Overview
 
-Built to practice HTTP API consumption and JSON handling in Java. The user types in a CEP, the app hits the ViaCEP REST API using `java.net.http.HttpClient`, deserializes the response into an `Endereco` record using GSON, prints the address to the console, and writes it to a `.json` file named after the CEP. Clean and focused — does one thing well.
+Short and focused — that's the best way to describe this one. You type a CEP, the app hits the ViaCEP REST API, deserializes the response into an `Endereco` record using GSON, prints the address to the console, and writes it to a `.json` file named after the CEP. That's it. One thing, done well. Built to practice HTTP consumption and JSON handling in Java without any unnecessary complexity around it.
 
 ---
 
@@ -27,27 +27,25 @@ src/
 
 | Concept | How it shows up |
 |---|---|
-| **HTTP API Consumption** | `HttpClient` + `HttpRequest` from `java.net.http` — no external library needed for the request |
-| **JSON Deserialization** | GSON maps the ViaCEP JSON response directly into the `Endereco` record |
-| **Java Record** | `Endereco` is a record — immutable, concise DTO with `cep`, `logradouro`, `complemento`, `localidade`, `uf`, and `bairro` fields |
-| **File I/O** | `GeradorDeArquivo` writes pretty-printed JSON using `GsonBuilder.setPrettyPrinting()` and `FileWriter` |
-| **Exception Handling** | API errors and file write failures are caught and reported gracefully — app exits cleanly |
-| **var keyword** | `var cep = leitura.nextLine()` — local type inference introduced in Java 10 |
+| **HTTP API Consumption** | `HttpClient` + `HttpRequest` from `java.net.http` |
+| **JSON Deserialization** | GSON maps the ViaCEP JSON response into the `Endereco` record |
+| **Java Record** | `Endereco` is a record — immutable, concise DTO |
+| **File I/O** | `GeradorDeArquivo` writes pretty-printed JSON using `GsonBuilder.setPrettyPrinting()` |
+| **Exception Handling** | API errors and file write failures are caught and reported gracefully |
+| **var keyword** | `var cep = leitura.nextLine()` — local type inference from Java 10 |
 
 ---
 
 ## How to Run
 
-**Prerequisites:** Java 18+ · IntelliJ IDEA or Eclipse · GSON library on the classpath
+**Prerequisites:** Java 18+ · IntelliJ IDEA or Eclipse · GSON on classpath
 
 ```bash
 git clone https://github.com/victorhubarb/zipcodefinder.git
 cd zipcodefinder
 ```
 
-Open in your IDE, add GSON to the classpath, run `Main.java`, and enter any valid Brazilian CEP when prompted.
-
-The app prints the full address to the console and saves it as `<CEP>.json` in the working directory — for example, searching `80530-230` generates `80530-230.json` with the formatted address data.
+Open in your IDE, add GSON to the classpath, run `Main.java`, and enter any valid Brazilian CEP. The app prints the address and saves it as `<CEP>.json`.
 
 ---
 
